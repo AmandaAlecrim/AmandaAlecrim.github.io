@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="Portfólio de Amanda Demétrio Alecrim — Desenvolvedora Full Stack com experiência em Angular, Java, C# e desenvolvimento web." />
+    <meta name="theme-color" content="#020202" />
+
+    <title>Amanda Alecrim · Desenvolvedora Full Stack</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="./css/main.css" />
+
+    <script>
+      (function applyStoredThemeBeforePaint() {
+        var storedTheme = localStorage.getItem('portfolio-theme');
+        if (storedTheme === 'light' || storedTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', storedTheme);
+        }
+      })();
+    </script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+
+    <header class="site-header" role="banner">
+      <div class="container site-header__inner">
+        <a class="site-header__brand" href="#home" aria-label="Ir para o início">
+          <span class="site-header__brand-mark" aria-hidden="true">◆</span>
+          <span class="site-header__brand-name">Amanda Alecrim</span>
+        </a>
+
+        <nav class="site-nav" aria-label="Navegação principal">
+          <button
+            class="site-nav__toggle"
+            type="button"
+            aria-controls="primary-menu"
+            aria-expanded="false"
+          >
+            <span class="visually-hidden">Abrir menu</span>
+            <span class="site-nav__toggle-bar" aria-hidden="true"></span>
+            <span class="site-nav__toggle-bar" aria-hidden="true"></span>
+            <span class="site-nav__toggle-bar" aria-hidden="true"></span>
+          </button>
+
+          <ul id="primary-menu" class="site-nav__menu">
+            <li><a class="site-nav__link" href="#about">Sobre</a></li>
+            <li><a class="site-nav__link" href="#skills">Habilidades</a></li>
+            <li><a class="site-nav__link" href="#projects">Projetos</a></li>
+            <li><a class="site-nav__link" href="#contact">Contato</a></li>
+          </ul>
+        </nav>
+
+        <button
+          class="theme-toggle"
+          type="button"
+          aria-label="Alternar tema"
+          aria-pressed="true"
+          title="Alternar tema"
+        >
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+          </svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section id="home" class="hero" aria-labelledby="hero-title">
+        <div class="container hero__inner">
+          <p class="hero__eyebrow">Olá, eu sou</p>
+          <h1 id="hero-title" class="hero__title">
+            Amanda Alecrim
+          </h1>
+          <p class="hero__subtitle">
+            Desenvolvedora Full Stack com experiência em Angular, Java e C#, focada em entregar
+            código eficiente e resolver problemas técnicos com pragmatismo.
+          </p>
+
+          <div class="hero__actions">
+            <a class="button button--primary" href="#projects">Ver projetos</a>
+            <a class="button button--ghost" href="#contact">Entrar em contato</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section" aria-labelledby="about-title">
+        <div class="container">
+          <header class="section__header">
+            <p class="section__eyebrow">Sobre</p>
+            <h2 id="about-title" class="section__title">Quem sou</h2>
+          </header>
+
+          <div class="about">
+            <p class="about__paragraph">
+              Sou desenvolvedora Full Stack graduada em Ciência da Computação, com trajetória
+              prática no desenvolvimento de sistemas web corporativos. Atuo desde a interface
+              até a lógica de servidor, com ênfase em <strong>Angular</strong> e
+              <strong>Java</strong>, além de experiência sólida com <strong>C# (ASP.NET)</strong>
+              e <strong>Flutter</strong>.
+            </p>
+            <p class="about__paragraph">
+              Tenho expertise em manutenção evolutiva, modelagem de bancos de dados relacionais
+              e garantia de qualidade via testes unitários. Perfil analítico e adaptável,
+              focada na entrega de código eficiente e na resolução técnica de problemas.
+            </p>
+            <p class="about__paragraph">
+              Este portfólio reúne meus principais projetos. Sinta-se à vontade para explorar
+              e entrar em contato.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills" class="section section--alt" aria-labelledby="skills-title">
+        <div class="container">
+          <header class="section__header">
+            <p class="section__eyebrow">Stack</p>
+            <h2 id="skills-title" class="section__title">Habilidades</h2>
+          </header>
+
+          <ul class="skills" role="list">
+            <li class="skills__item">Angular</li>
+            <li class="skills__item">TypeScript</li>
+            <li class="skills__item">JavaScript</li>
+            <li class="skills__item">HTML5</li>
+            <li class="skills__item">CSS3</li>
+            <li class="skills__item">Bootstrap</li>
+            <li class="skills__item">Java (POO)</li>
+            <li class="skills__item">C# / ASP.NET</li>
+            <li class="skills__item">Flutter / Dart</li>
+            <li class="skills__item">Python</li>
+            <li class="skills__item">SQL Server</li>
+            <li class="skills__item">MySQL</li>
+            <li class="skills__item">PostgreSQL</li>
+            <li class="skills__item">Git / GitHub</li>
+            <li class="skills__item">Linux</li>
+            <li class="skills__item">Scrum</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="projects" class="section" aria-labelledby="projects-title">
+        <div class="container">
+          <header class="section__header">
+            <p class="section__eyebrow">Portfólio</p>
+            <h2 id="projects-title" class="section__title">Projetos pessoais</h2>
+            <p class="section__description">
+              Seleção de projetos pessoais desenvolvidos recentemente.
+            </p>
+          </header>
+
+          <ul id="projects-list" class="projects" role="list" aria-live="polite">
+            <li class="projects__empty">Carregando projetos…</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="contact" class="section section--alt" aria-labelledby="contact-title">
+        <div class="container">
+          <header class="section__header">
+            <p class="section__eyebrow">Contato</p>
+            <h2 id="contact-title" class="section__title">Vamos conversar</h2>
+            <p class="section__description">
+              Disponibilidade para atuação presencial (Grande Florianópolis), híbrida ou remota.
+              Envie uma mensagem ou utilize um dos canais ao lado.
+            </p>
+          </header>
+
+          <div class="contact">
+            <form class="contact-form" novalidate>
+              <div class="form-field">
+                <label class="form-field__label" for="contact-name">Nome</label>
+                <input
+                  class="form-field__input"
+                  id="contact-name"
+                  name="name"
+                  type="text"
+                  required
+                  minlength="2"
+                  autocomplete="name"
+                />
+                <small class="form-field__error" data-error-for="name"></small>
+              </div>
+
+              <div class="form-field">
+                <label class="form-field__label" for="contact-email">E-mail</label>
+                <input
+                  class="form-field__input"
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  required
+                  autocomplete="email"
+                />
+                <small class="form-field__error" data-error-for="email"></small>
+              </div>
+
+              <div class="form-field">
+                <label class="form-field__label" for="contact-message">Mensagem</label>
+                <textarea
+                  class="form-field__input form-field__input--textarea"
+                  id="contact-message"
+                  name="message"
+                  rows="5"
+                  required
+                  minlength="10"
+                ></textarea>
+                <small class="form-field__error" data-error-for="message"></small>
+              </div>
+
+              <button class="button button--primary" type="submit">Enviar mensagem</button>
+              <p class="contact-form__status" role="status" aria-live="polite"></p>
+            </form>
+
+            <aside class="contact-info" aria-label="Outros canais">
+              <h3 class="contact-info__title">Outros canais</h3>
+              <ul class="contact-info__list" role="list">
+                <li>
+                  <a class="contact-info__link" href="" target="_blank" rel="noopener noreferrer">
+                    GitHub
+                  </a>
+                </li>
+                <li>
+                  <a class="contact-info__link" href="" target="_blank" rel="noopener noreferrer">
+                    LinkedIn
+                  </a>
+                </li>
+              </ul>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="container site-footer__inner">
+        <p class="site-footer__text">
+          © <span data-current-year>2026</span> Amanda Demétrio Alecrim · Desenvolvedora Full Stack
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

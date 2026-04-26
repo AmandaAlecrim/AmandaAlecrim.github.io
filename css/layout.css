@@ -1,0 +1,43 @@
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+}
+
+.section {
+  padding-block: var(--space-9);
+}
+
+.section--alt {
+  background-color: var(--color-bg-elevated);
+}
+
+.section__header {
+  max-width: 42rem;
+  margin-bottom: var(--space-7);
+}
+
+.section__eyebrow {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-3);
+}
+
+.section__title {
+  margin-bottom: var(--space-3);
+}
+
+.section__description {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 48rem) {
+  .section {
+    padding-block: var(--space-8);
+  }
+}
