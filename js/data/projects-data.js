@@ -5,6 +5,16 @@
 
 export const projects = [
   {
+    id: "portfolio-high-performance",
+    title: "Portfólio · High Performance",
+    description:
+      "Desenvolvimento de portfólio de alta performance com apoio do Cursor AI para otimização de código. Alcancei 100/100 em Performance e SEO no PageSpeed Insights, com melhorias avançadas de acessibilidade e Core Web Vitals.",
+    tags: ["SEO", "Performance", "Acessibilidade", "Core Web Vitals"],
+    year: 2026,
+    href: "https://amandaalecrim.github.io/",
+    external: true,
+  },
+  {
     id: "tcc-recomendacao-musical",
     title: "TCC · Recomendação Musical com IA",
     description:
