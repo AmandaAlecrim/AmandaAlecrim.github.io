@@ -7,6 +7,8 @@ Portfólio pessoal responsivo, com tema escuro/claro, construído **100% no fron
 - Tema escuro/claro com persistência em `localStorage`.
 - Acessibilidade (estrutura semântica, skip link, foco visível, ARIA, suporte a `prefers-reduced-motion`).
 - Seção de projetos alimentada por dados em `js/data/projects-data.js`.
+  - Suporte opcional a **miniatura no topo do card** (`thumbnail`) e **galeria de imagens** (`gallery`) com botão "Ver imagens".
+  - Imagens locais com carregamento sob demanda (lazy) para manter alta performance.
 - SEO básico para indexação (canonical, Open Graph/Twitter, Schema.org `Person/WebSite`) e verificação via metatag do Google Search Console.
 
 ## Stack
