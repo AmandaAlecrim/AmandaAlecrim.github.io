@@ -369,6 +369,15 @@
   transform: translateX(3px);
 }
 
+.project-card__link--disabled {
+  color: var(--color-text-subtle);
+  cursor: not-allowed;
+}
+
+.project-card__link--disabled::after {
+  content: "";
+}
+
 /* ============================================================
    Contato
    ============================================================ */

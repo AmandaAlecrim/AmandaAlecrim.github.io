@@ -8,6 +8,11 @@
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <meta name="google-site-verification" content="uBMav4uyqBt_7ebJQ6ftUd9wM4Nw5ntskT7jh7p5aWw" />
     <meta name="theme-color" content="#020202" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; upgrade-insecure-requests"
+    />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 
     <title>Amanda Demétrio Alecrim (Amanda Alecrim) · Desenvolvedora Full Stack</title>
 
@@ -77,23 +82,9 @@
       }
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
-    />
-
     <link rel="stylesheet" href="./css/main.css" />
 
-    <script>
-      (function applyStoredThemeBeforePaint() {
-        var storedTheme = localStorage.getItem('portfolio-theme');
-        if (storedTheme === 'light' || storedTheme === 'dark') {
-          document.documentElement.setAttribute('data-theme', storedTheme);
-        }
-      })();
-    </script>
+    <script src="./js/theme-before-paint.js"></script>
   </head>
 
   <body>

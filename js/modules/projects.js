@@ -45,15 +45,22 @@ const buildProjectCard = (project) => {
     text: project.description,
   });
 
-  const link = createElement("a", {
-    className: "project-card__link",
-    text: "Abrir projeto",
-    attributes: {
-      href: project.href,
-      "aria-label": `Abrir projeto ${project.title}`,
-      ...(project.external ? { target: "_blank", rel: "noopener noreferrer" } : {}),
-    },
-  });
+  const href = typeof project.href === "string" ? project.href.trim() : "";
+  const link = href
+    ? createElement("a", {
+        className: "project-card__link",
+        text: "Abrir projeto",
+        attributes: {
+          href,
+          "aria-label": `Abrir projeto ${project.title}`,
+          ...(project.external ? { target: "_blank", rel: "noopener noreferrer" } : {}),
+        },
+      })
+    : createElement("span", {
+        className: "project-card__link project-card__link--disabled",
+        text: "Em breve",
+        attributes: { "aria-disabled": "true" },
+      });
 
   card.append(header, description, buildTagList(project.tags), link);
   return card;
