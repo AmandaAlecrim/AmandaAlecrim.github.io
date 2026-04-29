@@ -20,8 +20,8 @@ export const projects = [
     description:
       "Modelo de IA para recomendações personalizadas usando base do Spotify e Machine Learning em Python.",
     tags: ["Python", "Machine Learning", "IA"],
-    year: null,
-    href: "",
+    year: 2026,
+    href: "https://www.kaggle.com/code/amandaalecrim/sistema-de-recomenda-o-musical-com-spotify",
     external: true,
   },
   {
