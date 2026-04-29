@@ -1,83 +1,57 @@
-<!--
-  Espaço reservado para suas informações pessoais (perfil GitHub).
-  Sugestões de seções: Sobre mim, Stack, Contato, Projetos em destaque.
--->
+# Portfolio
 
-### Hello there 👋
+Portfólio pessoal responsivo, com tema escuro/claro, construído **100% no frontend** seguindo os princípios de Clean Code.
 
-### I'm Amanda
+## Stack
 
-You can call me Amandinha, Amandy or Mandy too!
+- <img align="left" alt="HTML" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/html5/html5-original.svg"/> **HTML5** semântico.
+- <img align="left" alt="CSS" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/css3/css3-original.svg"/> **CSS3** com custom properties, grid e flexbox (sem pré-processadores).
+- <img align="left" alt="JavaScript" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/javascript/javascript-original.svg"/> **JavaScript** em ES Modules (sem frameworks, sem build).
 
-<br>
+## Área de projetos pessoais
 
-- 🔭 I’m currently working on Web and Mobile development
-- 🌱 I’m currently learning Angular.
-- 😄 Pronouns: She/her 💅
-<!-- - ⚡ Fun fact: -->
+- Lista de projetos localizada em `js/data/projects-data.js` com organização por meio de array.
+- Projetos pessoais locais estão localizados na pasta `projects/` para acesso via link interno.
 
-<br>
+Campos:
+id Identificador único (kebab-case).
+title Título exibido no card.
+description Descrição.
+tags Tecnologias/temas.
+year Ano de publicação/conclusão. Quando não houver ano é preenchido com null ou "".
+href Caminho local ou URL externa.
+external Se true, link abre em nova aba (utilizado para projetos com links externos).
 
-<!--
-- 👯 I’m looking to collaborate on ...
-- 💬 Ask me about ...
--->
+Exemplo de card:
 
-### Languages and Tools I use/used
+```js
+{
+  id: "meu-projeto",
+  title: "Meu Projeto",
+  description: "Descrição do projeto.",
+  tags: ["HTML", "CSS"],
+  year: 2026,
+  href: "./projects/meu-projeto/index.html",
+}
+```
 
-<img align="left" alt="HTML" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/html5/html5-original.svg"/>
-<img align="left" alt="CSS" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/css3/css3-original.svg"/>
-<img align="left" alt="JavaScript" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/javascript/javascript-original.svg"/>
-<img align="left" alt="Typescript" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/typescript/typescript-plain.svg"/>
+## Tema
 
-<img align="left" alt="BootStrap" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/bootstrap/bootstrap-plain.svg"/>
-<img align="left" alt="NodeJs" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/nodejs/nodejs-original.svg"/>
-<img align="left" alt="npm" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/npm/npm-original-wordmark.svg"/>
-<img align="left" alt="Angular" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/angularjs/angularjs-plain.svg"/>
-<img align="left" alt="php" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/php/php-plain.svg"/>
+- **Dark é o tema padrão** (definido via `data-theme="dark"` no `<html>` e por um pequeno script inline).
+- O tema escolhido é salvo em `localStorage` na chave `portfolio-theme`.
 
-<img align="left" alt="Java" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/java/java-original.svg"/>
-<img align="left" alt="JavaSpring" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/spring/spring-original.svg"/>
+## Acessibilidade
 
-<img align="left" alt="c#" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/csharp/csharp-original.svg"/>
-<img align="left alt="net" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/dotnetcore/dotnetcore-original.svg"/>
-<img align="left" alt="Python" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/python/python-original.svg" />
+- Estrutura semântica (`header`, `main`, `section`, `footer`, headings hierárquicos).
+- "Skip link" para o conteúdo principal.
+- Estados de foco visíveis e atributos ARIA no menu, no toggle de tema e nas mensagens do formulário.
+- `prefers-reduced-motion` é respeitado (animações são desativadas).
 
-<img align="left" alt="Git" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/git/git-original.svg"/>
-<img align="left" alt="GitHub" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/github/github-original.svg" />
-<img align="left" alt="GitLab" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/gitlab/gitlab-original.svg" />
+## Princípios de Clean Code Adotados
 
-<img align="left" alt="Mysql" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/mysql/mysql-original.svg" />
-<img align="left" alt="Postgresql" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/postgresql/postgresql-plain.svg" />
-
-<img align="left" alt="Terminal" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/bash/bash-original.svg" />
-<img align="left" alt="VS Code" height="26px" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/vscode/vscode-original.svg"/>
-<img align="left" alt="IntelliJ" height="26px" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/intellij/intellij-original.svg"/>
-
-<img align="left" alt="IntelliJ" height="26px" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/photoshop/photoshop-plain.svg"/>
-
-<br><br><br>
-
-<!--
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=AmandaAlecrim27&layout=compact&theme=gotham)
-<br><br>
-![GitHub stats](https://github-readme-stats.vercel.app/api?username=AmandaAlecrim27&show_icons=true&theme=gotham) </br>
- -->
-
-### ✨ Watch this little snake eat my contributions 🐍
-
-<!--
-![snake gif](https://github.com/AmandaAlecrim/AmandaAlecrim/blob/output/github-contribution-grid-snake.gif)
--->
-<picture>
-
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/AmandaAlecrim/AmandaAlecrim/blob/output/github-contribution-grid-snake-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/AmandaAlecrim/AmandaAlecrim/blob/output/github-contribution-grid-snake.svg">
-  <img alt="github contribution grid snake animation" src="https://github.com/AmandaAlecrim/AmandaAlecrim/blob/output/github-contribution-grid-snake.svg">
-</picture>
-
-<!-- Descrição curta sobre você aqui. -->
-
----
-
-> Documentação técnica deste portfólio: [`docs/README.md`](./docs/README.md)
+- **Nomes**: variáveis, funções e arquivos descrevem intenção.
+- **Funções**: cada função faz uma única coisa.
+- **Separação de responsabilidades**: CSS dividido por propósito (variáveis, base, layout, componentes); JS dividido em módulos por feature.
+- **Variáveis**: valores reutilizáveis ficam em variáveis/constantes.
+- **Duplicação**: utilitários compartilhados são reaproveitados.
+- **Convenções consistentes**: `kebab-case` para arquivos, `camelCase` para JS, BEM para CSS.
