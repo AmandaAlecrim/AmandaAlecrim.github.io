@@ -46,13 +46,13 @@ export const projects = [
     external: true,
   },
   {
-    id: "gestao-inventario-loja-doces",
-    title: "Gestão de Inventário · Loja de Doces",
+    id: "gestao-inventario-java",
+    title: "Gestão de Inventário (Java)",
     description:
       "Sistema para consulta e gerenciamento de produtos de uma loja de doces, aplicando conceitos de Programação Orientada a Objetos.",
     tags: ["Java", "POO"],
     year: 2019,
-    href: "https://github.com/AmandaAlecrim/Aps4Semestre",
+    href: "",
     external: true,
   },
 ];
