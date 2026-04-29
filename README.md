@@ -22,13 +22,16 @@ Portfólio pessoal responsivo, com tema escuro/claro, construído **100% no fron
 - Projetos pessoais locais estão localizados na pasta `projects/` para acesso via link interno.
 
 Campos:
-id Identificador único (kebab-case).
-title Título exibido no card.
-description Descrição.
-tags Tecnologias/temas.
-year Ano de publicação/conclusão. Quando não houver ano é preenchido com null ou "".
-href Caminho local ou URL externa.
-external Se true, link abre em nova aba (utilizado para projetos com links externos).
+- `id`: Identificador único (kebab-case).
+- `title`: Título exibido no card.
+- `description`: Descrição.
+- `tags`: Tecnologias/temas.
+- `year`: Ano de publicação/conclusão (`number` ou `null`/`""`).
+- `href`: Caminho local ou URL externa. Se vazio, o card exibe "Em breve".
+- `external`: Se `true`, o link abre em nova aba (utilizado para URLs externas).
+- `images` (opcional): Habilita miniatura + galeria no card.
+  - `images.count`: Quantidade de imagens (1 a 6).
+  - `images.ext`: Extensão dos arquivos (ex.: `"png"`, `"webp"`).
 
 Exemplo de card:
 
@@ -40,6 +43,8 @@ Exemplo de card:
   tags: ["HTML", "CSS"],
   year: 2026,
   href: "./projects/meu-projeto/index.html",
+  external: false,
+  images: { count: 2, ext: "png" },
 }
 ```
 
