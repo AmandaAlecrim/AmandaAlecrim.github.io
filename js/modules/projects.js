@@ -14,22 +14,32 @@ const createElement = (tag, { className, text, attributes } = {}) => {
   return element;
 };
 
-const getValidThumbnail = (project) => {
-  const raw = typeof project.thumbnail === "string" ? project.thumbnail.trim() : "";
-  return raw ? raw : null;
+const getProjectImages = (project) => {
+  const images = project?.images;
+  if (!images || typeof images !== "object") return null;
+
+  const count = Number(images.count);
+  if (!Number.isFinite(count) || count <= 0) return null;
+
+  const ext = typeof images.ext === "string" ? images.ext.trim().toLowerCase() : "";
+  if (!ext) return null;
+
+  return { count: Math.min(count, 6), ext };
 };
 
-const getValidGallery = (project) => {
-  if (!Array.isArray(project.gallery)) return [];
-  return project.gallery
-    .map((item) => {
-      if (!item || typeof item !== "object") return null;
-      const src = typeof item.src === "string" ? item.src.trim() : "";
-      const alt = typeof item.alt === "string" ? item.alt.trim() : "";
-      if (!src) return null;
-      return { src, alt };
-    })
-    .filter(Boolean);
+const buildProjectAssetsBasePath = (projectId) => `./assets/projects/${projectId}`;
+
+const pad2 = (value) => String(value).padStart(2, "0");
+
+const buildGalleryItems = (project, images) => {
+  const base = buildProjectAssetsBasePath(project.id);
+  return Array.from({ length: images.count }, (_, index) => {
+    const number = pad2(index + 1);
+    return {
+      src: `${base}/${number}.${images.ext}`,
+      alt: project.title ? `Imagem ${index + 1} — ${project.title}` : `Imagem ${index + 1}`,
+    };
+  });
 };
 
 const ensureGalleryDialog = () => {
@@ -40,23 +50,101 @@ const ensureGalleryDialog = () => {
   dialog.id = "project-gallery";
   dialog.className = "gallery-dialog";
   dialog.innerHTML = `
-    <div class="gallery-dialog__backdrop" data-close-gallery></div>
     <div class="gallery-dialog__panel" role="document" aria-label="Galeria do projeto">
       <div class="gallery-dialog__header">
         <h3 class="gallery-dialog__title" data-gallery-title>Imagens do projeto</h3>
+        <p class="gallery-dialog__counter" data-gallery-counter aria-live="polite"></p>
         <button class="gallery-dialog__close" type="button" data-close-gallery aria-label="Fechar galeria">
           ✕
         </button>
       </div>
-      <div class="gallery-dialog__body" data-gallery-body></div>
+      <div class="gallery-dialog__stage" data-gallery-stage>
+        <div class="gallery-dialog__viewport" data-gallery-viewport>
+          <div class="gallery-dialog__track" data-gallery-track></div>
+          <button class="gallery-dialog__nav gallery-dialog__nav--prev" type="button" data-gallery-prev aria-label="Imagem anterior">
+            ‹
+          </button>
+          <button class="gallery-dialog__nav gallery-dialog__nav--next" type="button" data-gallery-next aria-label="Próxima imagem">
+            ›
+          </button>
+        </div>
+      </div>
     </div>
   `;
 
   document.body.appendChild(dialog);
 
-  const close = () => {
-    if (dialog.open) dialog.close();
+  const state = { title: "", items: [], index: 0 };
+  const titleNode = dialog.querySelector("[data-gallery-title]");
+  const counterNode = dialog.querySelector("[data-gallery-counter]");
+  const viewportNode = dialog.querySelector("[data-gallery-viewport]");
+  const trackNode = dialog.querySelector("[data-gallery-track]");
+  const prevButton = dialog.querySelector("[data-gallery-prev]");
+  const nextButton = dialog.querySelector("[data-gallery-next]");
+
+  const setScrollLock = (isLocked) => {
+    if (isLocked) {
+      document.documentElement.dataset.modalOpen = "true";
+    } else {
+      delete document.documentElement.dataset.modalOpen;
+    }
   };
+
+  const updateNavPosition = () => {
+    if (!viewportNode || !trackNode) return;
+    const slides = trackNode.children;
+    const slide = slides[state.index];
+    if (!(slide instanceof HTMLElement)) return;
+    const img = slide.querySelector("img");
+    if (!(img instanceof HTMLImageElement)) return;
+
+    const viewportRect = viewportNode.getBoundingClientRect();
+    const imgRect = img.getBoundingClientRect();
+    const centerY = imgRect.top - viewportRect.top + imgRect.height / 2;
+
+    if (Number.isFinite(centerY) && centerY > 0) {
+      viewportNode.style.setProperty("--gallery-nav-top", `${centerY}px`);
+    } else {
+      viewportNode.style.removeProperty("--gallery-nav-top");
+    }
+  };
+
+  const update = () => {
+    const total = state.items.length;
+    if (!trackNode || total === 0) return;
+    const safeIndex = ((state.index % total) + total) % total;
+    state.index = safeIndex;
+
+    trackNode.style.transform = `translate3d(${-safeIndex * 100}%, 0, 0)`;
+
+    if (counterNode) {
+      counterNode.textContent = total > 0 ? `${safeIndex + 1} / ${total}` : "";
+    }
+
+    if (prevButton instanceof HTMLButtonElement) prevButton.disabled = total <= 1;
+    if (nextButton instanceof HTMLButtonElement) nextButton.disabled = total <= 1;
+
+    requestAnimationFrame(updateNavPosition);
+  };
+
+  const close = () => {
+    if (!dialog.open) return;
+    dialog.close();
+  };
+
+  const goPrev = () => {
+    if (state.items.length <= 1) return;
+    state.index -= 1;
+    update();
+  };
+
+  const goNext = () => {
+    if (state.items.length <= 1) return;
+    state.index += 1;
+    update();
+  };
+
+  dialog.addEventListener("close", () => setScrollLock(false));
 
   dialog.addEventListener("click", (event) => {
     const target = event.target;
@@ -68,37 +156,76 @@ const ensureGalleryDialog = () => {
     close();
   });
 
+  if (prevButton) prevButton.addEventListener("click", goPrev);
+  if (nextButton) nextButton.addEventListener("click", goNext);
+
+  dialog.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      goPrev();
+    }
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      goNext();
+    }
+  });
+
+  dialog.__gallery = {
+    setPayload: ({ title, items }) => {
+      state.title = title ?? "";
+      state.items = Array.isArray(items) ? items : [];
+      state.index = 0;
+      if (titleNode) {
+        titleNode.textContent = state.title ? `Imagens — ${state.title}` : "Imagens do projeto";
+      }
+      if (trackNode) {
+        trackNode.replaceChildren();
+        const fragment = document.createDocumentFragment();
+        state.items.forEach(({ src, alt }, index) => {
+          const slide = createElement("div", { className: "gallery-dialog__slide" });
+          const img = document.createElement("img");
+          img.className = "gallery-dialog__image";
+          img.loading = "lazy";
+          img.decoding = "async";
+          img.src = src;
+          img.alt = alt || state.title || "Imagem do projeto";
+          img.addEventListener(
+            "load",
+            () => {
+              if (index === state.index) requestAnimationFrame(updateNavPosition);
+            },
+            { once: true },
+          );
+          slide.appendChild(img);
+          fragment.appendChild(slide);
+        });
+        trackNode.appendChild(fragment);
+        trackNode.style.transform = "translate3d(0, 0, 0)";
+      }
+      update();
+    },
+    open: () => {
+      setScrollLock(true);
+      if (typeof dialog.showModal === "function") {
+        dialog.showModal();
+      } else {
+        dialog.setAttribute("open", "");
+      }
+      // garante foco no modal para setas funcionarem
+      if (nextButton instanceof HTMLElement) nextButton.focus();
+      requestAnimationFrame(updateNavPosition);
+    },
+  };
+
   return dialog;
 };
 
 const openGallery = ({ title, items }) => {
   const dialog = ensureGalleryDialog();
-  const titleNode = dialog.querySelector("[data-gallery-title]");
-  const bodyNode = dialog.querySelector("[data-gallery-body]");
-  if (!titleNode || !bodyNode) return;
-
-  titleNode.textContent = title ? `Imagens — ${title}` : "Imagens do projeto";
-  bodyNode.replaceChildren();
-
-  const fragment = document.createDocumentFragment();
-  items.forEach(({ src, alt }) => {
-    const figure = createElement("figure", { className: "gallery-dialog__figure" });
-    const img = document.createElement("img");
-    img.className = "gallery-dialog__image";
-    img.loading = "lazy";
-    img.decoding = "async";
-    img.src = src;
-    img.alt = alt || title || "Imagem do projeto";
-    figure.appendChild(img);
-    fragment.appendChild(figure);
-  });
-  bodyNode.appendChild(fragment);
-
-  if (typeof dialog.showModal === "function") {
-    dialog.showModal();
-  } else {
-    dialog.setAttribute("open", "");
-  }
+  const controller = dialog.__gallery;
+  if (!controller) return;
+  controller.setPayload({ title, items });
+  controller.open();
 };
 
 const buildTagList = (tags) => {
@@ -118,14 +245,14 @@ const buildTagList = (tags) => {
 const buildProjectCard = (project) => {
   const card = createElement("article", { className: "project-card is-reveal" });
 
-  const thumbnail = getValidThumbnail(project);
-  if (thumbnail) {
+  const images = getProjectImages(project);
+  if (images) {
     const media = createElement("div", { className: "project-card__media" });
     const img = document.createElement("img");
     img.className = "project-card__thumbnail";
     img.loading = "lazy";
     img.decoding = "async";
-    img.src = thumbnail;
+    img.src = `${buildProjectAssetsBasePath(project.id)}/01.${images.ext}`;
     img.alt = project.title ? `Ilustração do projeto ${project.title}` : "Ilustração do projeto";
     img.width = 640;
     img.height = 360;
@@ -149,7 +276,6 @@ const buildProjectCard = (project) => {
   });
 
   const href = typeof project.href === "string" ? project.href.trim() : "";
-  const gallery = getValidGallery(project);
 
   const link = href
     ? createElement("a", {
@@ -170,7 +296,7 @@ const buildProjectCard = (project) => {
   const footer = createElement("div", { className: "project-card__footer" });
   footer.appendChild(link);
 
-  if (gallery.length > 0) {
+  if (images) {
     footer.appendChild(
       createElement("button", {
         className: "project-card__gallery-button",
@@ -224,8 +350,10 @@ export const initProjects = () => {
     const projectId = trigger.getAttribute("data-open-gallery") ?? "";
     const project = Array.isArray(projects) ? projects.find((item) => item.id === projectId) : null;
     if (!project) return;
+    const images = getProjectImages(project);
+    if (!images) return;
 
-    const items = getValidGallery(project);
+    const items = buildGalleryItems(project, images);
     if (items.length === 0) return;
     openGallery({ title: project.title, items });
   });

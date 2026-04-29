@@ -11,8 +11,9 @@ export const projects = [
       "Desenvolvimento de portfólio de alta performance com apoio do Cursor AI para otimização de código. Alcancei 100/100 em Performance e SEO no PageSpeed Insights, com melhorias avançadas de acessibilidade e Core Web Vitals.",
     tags: ["SEO", "Performance", "Acessibilidade", "Core Web Vitals"],
     year: 2026,
-    href: "https://amandaalecrim.github.io/",
+    href: "https://github.com/AmandaAlecrim/AmandaAlecrim.github.io",
     external: true,
+    images: { count: 2, ext: "png" },
   },
   {
     id: "tcc-recomendacao-musical",
@@ -50,7 +51,7 @@ export const projects = [
     description:
       "Sistema para consulta e gerenciamento de produtos de uma loja de doces, aplicando conceitos de Programação Orientada a Objetos.",
     tags: ["Java", "POO"],
-    year: null,
+    year: 2019,
     href: "",
     external: true,
   },
