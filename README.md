@@ -2,6 +2,13 @@
 
 Portfólio pessoal responsivo, com tema escuro/claro, construído **100% no frontend** seguindo os princípios de Clean Code.
 
+## Recursos
+
+- Tema escuro/claro com persistência em `localStorage`.
+- Acessibilidade (estrutura semântica, skip link, foco visível, ARIA, suporte a `prefers-reduced-motion`).
+- Seção de projetos alimentada por dados em `js/data/projects-data.js`.
+- SEO básico para indexação (canonical, Open Graph/Twitter, Schema.org `Person/WebSite`) e verificação via metatag do Google Search Console.
+
 ## Stack
 
 - <img align="left" alt="HTML" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/html5/html5-original.svg"/> **HTML5** semântico.
