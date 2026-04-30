@@ -6,6 +6,8 @@ const EMPTY_STATE_MESSAGE = "Nenhum projeto cadastrado ainda.";
 const EMPTY_FILTER_MESSAGE = "Nenhum projeto corresponde aos filtros selecionados.";
 const GALLERY_TRIGGER_SELECTOR = "[data-open-gallery]";
 const YEAR_NONE_VALUE = "__no_year__";
+const SKILLS_TRIGGER_SELECTOR = "[data-skill-tags]";
+const PROJECTS_SECTION_ID = "projects";
 
 const createElement = (tag, { className, text, attributes } = {}) => {
   const element = document.createElement(tag);
@@ -366,6 +368,20 @@ const collectFilterTags = (items) => {
   return [...tags].sort((a, b) => a.localeCompare(b, "pt-BR"));
 };
 
+const collectSkillTagsFromPage = () => {
+  const tags = new Set();
+  document.querySelectorAll(SKILLS_TRIGGER_SELECTOR).forEach((node) => {
+    if (!(node instanceof Element)) return;
+    const raw = node.getAttribute("data-skill-tags") ?? "";
+    raw
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean)
+      .forEach((value) => tags.add(value));
+  });
+  return [...tags];
+};
+
 const projectMatchesFilters = (project, yearValue, tagValue) => {
   if (yearValue) {
     if (yearValue === YEAR_NONE_VALUE) {
@@ -380,7 +396,7 @@ const projectMatchesFilters = (project, yearValue, tagValue) => {
   return true;
 };
 
-const mountProjectsFilters = (root, orderedProjects, onFiltersChange) => {
+const mountProjectsFilters = (root, orderedProjects, onFiltersChange, { extraTags = [] } = {}) => {
   root.removeAttribute("hidden");
   root.replaceChildren();
 
@@ -396,7 +412,9 @@ const mountProjectsFilters = (root, orderedProjects, onFiltersChange) => {
   const row = createElement("div", { className: "projects-filters-form__row" });
 
   const { numericYears, hasNoYear } = collectFilterYears(orderedProjects);
-  const tags = collectFilterTags(orderedProjects);
+  const tags = Array.from(new Set([...collectFilterTags(orderedProjects), ...extraTags])).sort((a, b) =>
+    a.localeCompare(b, "pt-BR"),
+  );
 
   const yearField = createElement("div", {
     className: "form-field projects-filters-form__field",
@@ -462,6 +480,27 @@ const mountProjectsFilters = (root, orderedProjects, onFiltersChange) => {
   });
 
   form.addEventListener("submit", (e) => e.preventDefault());
+
+  return {
+    setYear: (value) => {
+      yearSelect.value = value ?? "";
+      apply();
+    },
+    setTag: (value) => {
+      tagSelect.value = value ?? "";
+      apply();
+    },
+    clear: () => {
+      yearSelect.value = "";
+      tagSelect.value = "";
+      apply();
+    },
+    hasTagOption: (value) => {
+      const target = String(value ?? "");
+      if (!target) return true;
+      return Array.from(tagSelect.options).some((opt) => opt.value === target);
+    },
+  };
 };
 
 const renderProjects = (list, items) => {
@@ -501,18 +540,54 @@ export const initProjects = () => {
   const ordered = sortProjectsByYear(projects);
   renderProjects(list, ordered);
 
+  const applyFilters = (yearValue, tagValue) => {
+    const filtered = ordered.filter((p) =>
+      projectMatchesFilters(p, yearValue, tagValue),
+    );
+    if (filtered.length === 0) {
+      renderEmptyFilterState(list);
+    } else {
+      renderProjects(list, filtered);
+    }
+  };
+
+  let filtersController = null;
   if (filtersRoot) {
-    mountProjectsFilters(filtersRoot, ordered, (yearValue, tagValue) => {
-      const filtered = ordered.filter((p) =>
-        projectMatchesFilters(p, yearValue, tagValue),
-      );
-      if (filtered.length === 0) {
-        renderEmptyFilterState(list);
-      } else {
-        renderProjects(list, filtered);
-      }
-    });
+    const extraTags = collectSkillTagsFromPage();
+    filtersController = mountProjectsFilters(filtersRoot, ordered, applyFilters, { extraTags });
   }
+
+  const scrollToProjects = () => {
+    const section = document.getElementById(PROJECTS_SECTION_ID);
+    if (!section) return;
+    const prefersReducedMotion =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    section.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  };
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const trigger = target.closest(SKILLS_TRIGGER_SELECTOR);
+    if (!trigger) return;
+
+    const raw = trigger.getAttribute("data-skill-tags") ?? "";
+    const candidates = raw
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean);
+    if (candidates.length === 0) return;
+
+    scrollToProjects();
+    if (!filtersController) return;
+
+    const picked =
+      candidates.find((tag) => filtersController.hasTagOption(tag)) ?? candidates[0];
+    filtersController.setTag(picked);
+  });
 
   list.addEventListener("click", (event) => {
     const target = event.target;
