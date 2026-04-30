@@ -1,8 +1,11 @@
 import { projects } from "../data/projects-data.js";
 
 const LIST_SELECTOR = "#projects-list";
+const FILTERS_ROOT_ID = "projects-filters-root";
 const EMPTY_STATE_MESSAGE = "Nenhum projeto cadastrado ainda.";
+const EMPTY_FILTER_MESSAGE = "Nenhum projeto corresponde aos filtros selecionados.";
 const GALLERY_TRIGGER_SELECTOR = "[data-open-gallery]";
+const YEAR_NONE_VALUE = "__no_year__";
 
 const createElement = (tag, { className, text, attributes } = {}) => {
   const element = document.createElement(tag);
@@ -335,6 +338,132 @@ const renderEmptyState = (list) => {
   );
 };
 
+const renderEmptyFilterState = (list) => {
+  list.replaceChildren(
+    createElement("li", { className: "projects__empty", text: EMPTY_FILTER_MESSAGE }),
+  );
+};
+
+const hasProjectYear = (p) =>
+  p.year !== null && p.year !== undefined && p.year !== "";
+
+const collectFilterYears = (items) => {
+  const years = new Set();
+  let hasNoYear = false;
+  items.forEach((p) => {
+    if (hasProjectYear(p)) years.add(Number(p.year));
+    else hasNoYear = true;
+  });
+  const sorted = [...years].sort((a, b) => b - a);
+  return { numericYears: sorted, hasNoYear };
+};
+
+const collectFilterTags = (items) => {
+  const tags = new Set();
+  items.forEach((p) => {
+    if (Array.isArray(p.tags)) p.tags.forEach((t) => tags.add(t));
+  });
+  return [...tags].sort((a, b) => a.localeCompare(b, "pt-BR"));
+};
+
+const projectMatchesFilters = (project, yearValue, tagValue) => {
+  if (yearValue) {
+    if (yearValue === YEAR_NONE_VALUE) {
+      if (hasProjectYear(project)) return false;
+    } else if (Number(project.year) !== Number(yearValue)) {
+      return false;
+    }
+  }
+  if (tagValue) {
+    if (!Array.isArray(project.tags) || !project.tags.includes(tagValue)) return false;
+  }
+  return true;
+};
+
+const mountProjectsFilters = (root, orderedProjects, onFiltersChange) => {
+  root.removeAttribute("hidden");
+  root.replaceChildren();
+
+  const form = createElement("form", {
+    className: "projects-filters-form",
+    attributes: {
+      id: "projects-filters-form",
+      "aria-label": "Filtrar projetos por ano e tecnologia",
+      autocomplete: "off",
+    },
+  });
+
+  const row = createElement("div", { className: "projects-filters-form__row" });
+
+  const { numericYears, hasNoYear } = collectFilterYears(orderedProjects);
+  const tags = collectFilterTags(orderedProjects);
+
+  const yearField = createElement("div", {
+    className: "form-field projects-filters-form__field",
+  });
+  yearField.appendChild(
+    createElement("label", {
+      className: "form-field__label",
+      text: "Ano",
+      attributes: { for: "projects-filter-year" },
+    }),
+  );
+  const yearSelect = document.createElement("select");
+  yearSelect.className = "form-field__input";
+  yearSelect.id = "projects-filter-year";
+  yearSelect.appendChild(new Option("Todos os anos", ""));
+  if (hasNoYear) {
+    yearSelect.appendChild(new Option("Sem data", YEAR_NONE_VALUE));
+  }
+  numericYears.forEach((y) => {
+    yearSelect.appendChild(new Option(String(y), String(y)));
+  });
+  yearField.appendChild(yearSelect);
+
+  const tagField = createElement("div", {
+    className: "form-field projects-filters-form__field",
+  });
+  tagField.appendChild(
+    createElement("label", {
+      className: "form-field__label",
+      text: "Ferramenta ou tecnologia",
+      attributes: { for: "projects-filter-tag" },
+    }),
+  );
+  const tagSelect = document.createElement("select");
+  tagSelect.className = "form-field__input";
+  tagSelect.id = "projects-filter-tag";
+  tagSelect.appendChild(new Option("Todas", ""));
+  tags.forEach((tag) => {
+    tagSelect.appendChild(new Option(tag, tag));
+  });
+  tagField.appendChild(tagSelect);
+
+  const clearBtn = createElement("button", {
+    className: "button button--ghost projects-filters-form__clear",
+    text: "Limpar filtros",
+    attributes: { type: "button" },
+  });
+
+  row.append(yearField, tagField, clearBtn);
+  form.appendChild(row);
+  root.appendChild(form);
+
+  const apply = () => {
+    onFiltersChange(yearSelect.value, tagSelect.value);
+  };
+
+  yearSelect.addEventListener("change", apply);
+  tagSelect.addEventListener("change", apply);
+  clearBtn.addEventListener("click", () => {
+    yearSelect.value = "";
+    tagSelect.value = "";
+    apply();
+  });
+
+  form.addEventListener("submit", (e) => e.preventDefault());
+};
+
 const renderProjects = (list, items) => {
   const fragment = document.createDocumentFragment();
   items.forEach((project) => {
@@ -361,6 +490,7 @@ const sortProjectsByYear = (items) => {
 
 export const initProjects = () => {
   const list = document.querySelector(LIST_SELECTOR);
+  const filtersRoot = document.getElementById(FILTERS_ROOT_ID);
   if (!list) return;
 
   if (!Array.isArray(projects) || projects.length === 0) {
@@ -370,6 +500,19 @@ export const initProjects = () => {
 
   const ordered = sortProjectsByYear(projects);
   renderProjects(list, ordered);
+
+  if (filtersRoot) {
+    mountProjectsFilters(filtersRoot, ordered, (yearValue, tagValue) => {
+      const filtered = ordered.filter((p) =>
+        projectMatchesFilters(p, yearValue, tagValue),
+      );
+      if (filtered.length === 0) {
+        renderEmptyFilterState(list);
+      } else {
+        renderProjects(list, filtered);
+      }
+    });
+  }
 
   list.addEventListener("click", (event) => {
     const target = event.target;

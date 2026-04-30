@@ -290,6 +290,35 @@
   font-style: italic;
 }
 
+.projects-toolbar {
+  margin-bottom: var(--space-5);
+}
+
+.projects-filters-form {
+  margin: 0;
+}
+
+.projects-filters-form__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4);
+}
+
+.projects-filters-form__field {
+  flex: 1 1 12rem;
+  min-width: min(100%, 12rem);
+}
+
+.projects-filters-form__field .form-field__input {
+  cursor: pointer;
+}
+
+.projects-filters-form__clear {
+  flex: 0 0 auto;
+  align-self: flex-end;
+}
+
 .project-card {
   display: flex;
   flex-direction: column;
