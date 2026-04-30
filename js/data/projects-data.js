@@ -8,12 +8,13 @@ export const projects = [
     id: "portfolio-high-performance",
     title: "Portfólio · High Performance",
     description:
-      "Desenvolvimento de portfólio de alta performance com apoio do Cursor AI para otimização de código. Alcancei 100/100 em Performance e SEO no PageSpeed Insights, com melhorias avançadas de acessibilidade e Core Web Vitals.",
+      "Desenvolvimento de portfólio de alta performance com otimização de código. Alcancei 100/100 em Performance e SEO no PageSpeed Insights, com melhorias avançadas de acessibilidade e Core Web Vitals.",
     tags: ["SEO", "Performance", "Acessibilidade", "Core Web Vitals"],
     year: 2026,
     href: "https://github.com/AmandaAlecrim/AmandaAlecrim.github.io",
     external: true,
-    images: { count: 2, ext: "png" },
+    thumbnail: { ext: "png" },
+    images: { count: 6, ext: "png" },
   },
   {
     id: "tcc-recomendacao-musical",
@@ -103,6 +104,7 @@ export const projects = [
     tags: ["HTML5", "CSS3", "Flexbox", "Landing Page", "Discord"],
     year: 2023,
     href: "https://github.com/AmandaAlecrim/landing-page-discord-bot",
+    thumbnail: { ext: "png" },
     external: true,
   },
   {

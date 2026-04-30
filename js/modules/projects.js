@@ -27,7 +27,17 @@ const getProjectImages = (project) => {
   return { count: Math.min(count, 6), ext };
 };
 
+const getProjectThumbnail = (project) => {
+  const thumb = project?.thumbnail;
+  if (!thumb || typeof thumb !== "object") return null;
+  const ext = typeof thumb.ext === "string" ? thumb.ext.trim().toLowerCase() : "";
+  if (!ext) return null;
+  return { ext };
+};
+
 const buildProjectAssetsBasePath = (projectId) => `./assets/projects/${projectId}`;
+const buildThumbnailPath = (projectId, ext) =>
+  `./assets/projects/thumbnails/${projectId}.${ext}`;
 
 const pad2 = (value) => String(value).padStart(2, "0");
 
@@ -246,13 +256,14 @@ const buildProjectCard = (project) => {
   const card = createElement("article", { className: "project-card is-reveal" });
 
   const images = getProjectImages(project);
-  if (images) {
+  const thumbnail = getProjectThumbnail(project);
+  if (thumbnail) {
     const media = createElement("div", { className: "project-card__media" });
     const img = document.createElement("img");
     img.className = "project-card__thumbnail";
     img.loading = "lazy";
     img.decoding = "async";
-    img.src = `${buildProjectAssetsBasePath(project.id)}/01.${images.ext}`;
+    img.src = buildThumbnailPath(project.id, thumbnail.ext);
     img.alt = project.title ? `Ilustração do projeto ${project.title}` : "Ilustração do projeto";
     img.width = 640;
     img.height = 360;
@@ -330,6 +341,20 @@ const renderProjects = (list, items) => {
   list.replaceChildren(fragment);
 };
 
+const sortProjectsByYear = (items) => {
+  const hasYear = (p) =>
+    p.year !== null && p.year !== undefined && p.year !== "";
+
+  return [...items].sort((a, b) => {
+    const aOk = hasYear(a);
+    const bOk = hasYear(b);
+    if (aOk && bOk) return Number(b.year) - Number(a.year);
+    if (aOk && !bOk) return -1;
+    if (!aOk && bOk) return 1;
+    return 0;
+  });
+};
+
 export const initProjects = () => {
   const list = document.querySelector(LIST_SELECTOR);
   if (!list) return;
@@ -339,7 +364,8 @@ export const initProjects = () => {
     return;
   }
 
-  renderProjects(list, projects);
+  const ordered = sortProjectsByYear(projects);
+  renderProjects(list, ordered);
 
   list.addEventListener("click", (event) => {
     const target = event.target;
