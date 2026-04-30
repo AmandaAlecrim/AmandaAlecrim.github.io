@@ -257,19 +257,6 @@ const buildProjectCard = (project) => {
 
   const images = getProjectImages(project);
   const thumbnail = getProjectThumbnail(project);
-  if (thumbnail) {
-    const media = createElement("div", { className: "project-card__media" });
-    const img = document.createElement("img");
-    img.className = "project-card__thumbnail";
-    img.loading = "lazy";
-    img.decoding = "async";
-    img.src = buildThumbnailPath(project.id, thumbnail.ext);
-    img.alt = project.title ? `Ilustração do projeto ${project.title}` : "Ilustração do projeto";
-    img.width = 640;
-    img.height = 360;
-    media.appendChild(img);
-    card.appendChild(media);
-  }
 
   const header = createElement("header", { className: "project-card__header" });
   header.appendChild(
@@ -279,6 +266,20 @@ const buildProjectCard = (project) => {
     header.appendChild(
       createElement("span", { className: "project-card__year", text: String(project.year) }),
     );
+  }
+
+  let media = null;
+  if (thumbnail) {
+    media = createElement("div", { className: "project-card__media" });
+    const img = document.createElement("img");
+    img.className = "project-card__thumbnail";
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.src = buildThumbnailPath(project.id, thumbnail.ext);
+    img.alt = project.title ? `Ilustração do projeto ${project.title}` : "Ilustração do projeto";
+    img.width = 640;
+    img.height = 360;
+    media.appendChild(img);
   }
 
   const description = createElement("p", {
@@ -321,7 +322,10 @@ const buildProjectCard = (project) => {
     );
   }
 
-  card.append(header, description, buildTagList(project.tags), footer);
+  const blocks = [header];
+  if (media) blocks.push(media);
+  blocks.push(description, buildTagList(project.tags), footer);
+  card.append(...blocks);
   return card;
 };
 
