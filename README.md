@@ -20,7 +20,7 @@ Portfólio pessoal responsivo, com tema escuro/claro, construído **100% no fron
 
 ## Área de projetos pessoais
 
-- Lista de projetos em `js/data/projects-data.js` (array; a exibição é reordenada por `year` na página).
+- Lista de projetos localizada em `js/data/projects-data.js` com organização por meio de array.
 - Projetos com demo local podem apontar `href` para arquivos em `projects/` (caminho relativo à raiz do site).
 
 **Pastas de mídia**
@@ -37,12 +37,12 @@ Campos:
 - `tags`: Tecnologias/temas.
 - `year`: Ano de publicação ou conclusão (`number` ou `null`/`""` para "sem data").
 - `href`: Caminho local ou URL externa. Se vazio, o card exibe "Em breve".
-- `external`: Se `true`, o link abre em nova aba (para URLs externas).
+- `external`: Se `true`, o link abre em nova aba (utilizado para URLs externas).
 - `thumbnail` (opcional): Exibe a miniatura no card (abaixo do título/ano). Não repete a galeria: o arquivo fica só em `assets/projects/thumbnails/`.
   - `thumbnail.ext`: Extensão do arquivo (ex.: `"png"`, `"webp"`).
-- `images` (opcional): Habilita a galeria e o botão "Ver imagens" (não define a imagem do card; use `thumbnail` para isso).
-  - `images.count`: Quantidade de imagens na galeria (1 a 6).
-  - `images.ext`: Extensão dos arquivos na pasta do projeto (ex.: `"png"`, `"webp"`).
+- `images` (opcional): Habilita a galeria e o botão "Ver imagens".
+  - `images.count`: Quantidade de imagens (1 a 6).
+  - `images.ext`: Extensão dos arquivos (ex.: `"png"`, `"webp"`).
 
 Exemplo de card com miniatura e galeria:
 
