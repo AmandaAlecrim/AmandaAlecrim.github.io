@@ -124,7 +124,7 @@ export const projects = [
       "Ajudante visual para montar e analisar tabuleiros de Campo Minado no browser: grade interativa (HTML/CSS), estado sincronizado com o DOM, solver determinístico com dedução global pelo total de bombas (módulo core isolado), dicas visuais (bandeiras automáticas e casas seguras), persistência em localStorage, navegação por teclado e UI com estética Jirai Kei.",
     tags: ["JavaScript", "HTML5", "CSS3", "ES Modules", "localStorage", "GitHub Pages"],
     year: 2026,
-    href: "https://github.com/AmandaAlecrim/mines-buddy",
+    href: "https://amandaalecrim.github.io/mines-buddy/",
     external: true,
   }
 ];
