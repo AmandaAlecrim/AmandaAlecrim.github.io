@@ -2,27 +2,49 @@
 
 Portfólio pessoal responsivo, com tema escuro/claro, construído **100% no frontend** seguindo os princípios de Clean Code.
 
+## Recursos
+
+- Tema escuro/claro com persistência em `localStorage`.
+- Acessibilidade (estrutura semântica, skip link, foco visível, ARIA, suporte a `prefers-reduced-motion`).
+- Seção de projetos alimentada por dados em `js/data/projects-data.js`.
+  - **Ordenação na página:** ano mais recente primeiro; projetos sem ano aparecem por último (a ordem do array no arquivo não importa).
+  - **Miniatura do card** (opcional): imagem em pasta separada da galeria, exibida **abaixo do título e do ano**.
+  - **Galeria** (opcional): imagens em sequência com botão "Ver imagens", via convenção de pastas.
+- SEO básico para indexação (canonical, Open Graph/Twitter, Schema.org `Person/WebSite`) e verificação via metatag do Google Search Console.
+
 ## Stack
 
-- **HTML5** semântico.
-- **CSS3** com custom properties, grid e flexbox (sem pré-processadores).
-- **JavaScript** em ES Modules (sem frameworks, sem build).
+- <img align="left" alt="HTML" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/html5/html5-original.svg"/> **HTML5** semântico.
+- <img align="left" alt="CSS" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/css3/css3-original.svg"/> **CSS3** com custom properties, grid e flexbox (sem pré-processadores).
+- <img align="left" alt="JavaScript" width="26px" src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/javascript/javascript-original.svg"/> **JavaScript** em ES Modules (sem frameworks, sem build).
 
 ## Área de projetos pessoais
 
 - Lista de projetos localizada em `js/data/projects-data.js` com organização por meio de array.
-- Projetos pessoais locais estão localizados na pasta `projects/` para acesso via link interno.
+- Projetos com demo local podem apontar `href` para arquivos em `projects/` (caminho relativo à raiz do site).
+
+**Pastas de mídia**
+
+| Uso | Caminho | Convenção |
+| --- | --- | --- |
+| Thumbnail do card | `assets/projects/thumbnails/` | Arquivo `{{id}}.{{ext}}` (o `id` do projeto e a extensão de `thumbnail.ext` devem coincidir). |
+| Galeria (modal) | `assets/projects/{{id}}/` | `01.png`, `02.png`, … (número com dois dígitos; quantidade e extensão vêm de `images`). |
 
 Campos:
-id Identificador único (kebab-case).
-title Título exibido no card.
-description Descrição.
-tags Tecnologias/temas.
-year Ano de publicação/conclusão. Quando não houver ano é preenchido com null ou "".
-href Caminho local ou URL externa.
-external Se true, link abre em nova aba (utilizado para projetos com links externos).
+- `id`: Identificador único (kebab-case); define o nome do arquivo da miniatura e o nome da pasta da galeria.
+- `title`: Título exibido no card.
+- `description`: Descrição.
+- `tags`: Tecnologias/temas.
+- `year`: Ano de publicação ou conclusão (`number` ou `null`/`""` para "sem data").
+- `href`: Caminho local ou URL externa. Se vazio, o card exibe "Em breve".
+- `external`: Se `true`, o link abre em nova aba (utilizado para URLs externas).
+- `thumbnail` (opcional): Exibe a miniatura no card (abaixo do título/ano). Não repete a galeria: o arquivo fica só em `assets/projects/thumbnails/`.
+  - `thumbnail.ext`: Extensão do arquivo (ex.: `"png"`, `"webp"`).
+- `images` (opcional): Habilita a galeria e o botão "Ver imagens".
+  - `images.count`: Quantidade de imagens (1 a 6).
+  - `images.ext`: Extensão dos arquivos (ex.: `"png"`, `"webp"`).
 
-Exemplo de card:
+Exemplo de card com miniatura e galeria:
 
 ```js
 {
@@ -32,8 +54,13 @@ Exemplo de card:
   tags: ["HTML", "CSS"],
   year: 2026,
   href: "./projects/meu-projeto/index.html",
+  external: false,
+  thumbnail: { ext: "png" },
+  images: { count: 2, ext: "png" },
 }
 ```
+
+Arquivos esperados nesse exemplo: `assets/projects/thumbnails/meu-projeto.png`, `assets/projects/meu-projeto/01.png`, `assets/projects/meu-projeto/02.png`.
 
 ## Tema
 
